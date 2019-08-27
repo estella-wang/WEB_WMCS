@@ -6,3 +6,16 @@ html, body, #root {
 body {
   margin: 0;
 }
+
+.fade-exit-active, .fade-enter-active {
+  transition: opacity .5s .5s;
+  -webkit-transition: opacity .5s .5s;
+  -moz-transition: opacity .5s .5s;
+  -ms-transition: opacity .5s .5s;
+  -o-transition: opacity .5s .5s;
+}
+
+.fade-enter, .fade-exit {
+  /*.slide-fade-leave-activeforbelowversion2.1.8*/
+  opacity: 0;
+}
