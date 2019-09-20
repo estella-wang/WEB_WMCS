@@ -2,52 +2,61 @@
  * @Author: Estella Wang
  * @Date: 2019-08-26 15:25:54
  * @LastEditors: Estella Wang
- * @LastEditTime: 2019-08-26 18:33:14
+ * @LastEditTime: 2019-09-20 17:14:07
  */
-let menuList : { value: number , label: string, icon?: string, link?: string, children?: {value: number , label: string, link?: string}[] }[] = [
-    {
-        value: 0,
-        label: "仓库",
-        icon: "appstore",
-        children: [
-            {
-                value: 0.1,
-                label: '库存',
-                link: '/warehouse/inventory'
-            },
-            {
-                value: 0.2,
-                label: '库位',
-                link: '/warehouse/inventory-location'
-            }
-        ]
-    },
+const menuList = [
     {
         value: 1,
-        label: "物料",
-        icon: "gold",
-        link: '/material'
+        label: "库存",
+        link: "/inventory",
+        icon: "appstore",
     },
     {
         value: 2,
-        label: '载具',
-        icon: "rocket",
-        link: '/vehicle'
+        label: "库位",
+        link: "/inventory-location",
+        icon: "appstore",
     },
     {
         value: 3,
-        label: '主数据',
+        label: "物料",
+        icon: "gold",
+        link: "/material",
+    },
+    {
+        value: 4,
+        label: "载具",
+        icon: "rocket",
+        link: "/vehicle",
+    },
+    {
+        value: 5,
+        label: "主数据",
         icon: "setting",
-        link: '/main-data'
-    }
-]
+        link: "/main-data",
+        children: [
+            {
+                value: 5.1,
+                label: "物料SKU",
+                link: "/main-data/sku",
+            },
+            {
+                value: 5.2,
+                label: "载具类型",
+                link: "/main-data/vehicles",
+            },
+        ],
+    },
+];
 
-let menuIndex:any = {
-    "/warehouse/inventory": 0.1,
-    "/warehouse/inventory-location": 0.2,
-    "/material": 1,
-    "/vehicle": 2,
-    "/main-data": 3
-}
+const menuIndex: any = {
+    "/inventory": 1,
+    "/inventory-location": 2,
+    "/material": 3,
+    "/vehicle": 4,
+    "/main-data": 5,
+    "/main-data/sku": 5.1,
+    "/main-data/vehicles": 5.2,
+};
 
 export {menuList, menuIndex};

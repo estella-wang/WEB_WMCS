@@ -19,3 +19,7 @@ body {
   /*.slide-fade-leave-activeforbelowversion2.1.8*/
   opacity: 0;
 }
+
+.ant-layout-content > div {
+  height: 100%;
+}

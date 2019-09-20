@@ -50,3 +50,11 @@
   -ms-border-radius:50%;
   -o-border-radius:50%;
 }
+
+.pageContentWrapper {
+  padding: 24px;
+  margin-bottom: 24px;
+  background: #fff;
+  min-height: 100%;
+}
+

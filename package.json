@@ -6,7 +6,13 @@
     "test": "umi test",
     "lint:es": "eslint --ext .js src mock tests",
     "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "commit": "git add . && npx git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "dependencies": {
     "@types/react-transition-group": "^4.2.2",
@@ -22,6 +28,8 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-test-renderer": "^16.0.3",
     "babel-eslint": "^9.0.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^1.4.0",
     "eslint-plugin-flowtype": "^2.50.0",

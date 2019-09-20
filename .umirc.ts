@@ -1,17 +1,23 @@
-import { IConfig } from 'umi-types';
+/*
+ * @Author: Estella Wang
+ * @Date: 2019-08-26 11:55:26
+ * @LastEditors: Estella Wang
+ * @LastEditTime: 2019-08-26 11:55:26
+ */
+import { IConfig } from "umi-types";
 
 // ref: https://umijs.org/config/
 const config: IConfig =  {
   treeShaking: true,
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
-    ['umi-plugin-react', {
+    ["umi-plugin-react", {
       antd: true,
       dva: true,
       dynamicImport: false,
-      title: 'test',
+      title: "自动化仓库",
       dll: false,
-      
+
       routes: {
         exclude: [
           /models\//,
@@ -23,6 +29,6 @@ const config: IConfig =  {
       },
     }],
   ],
-}
+};
 
 export default config;
