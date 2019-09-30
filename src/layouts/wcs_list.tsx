@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./wcs_list.less";
 import { Row, Col, Typography, Modal, Button, Table, Drawer, Popconfirm, message } from "antd";
-import tableColumns from "@/utils/tableColumns";
 // import { connect } from 'dva';
-import WrappedSkuItemForm from "@/components/skuItemForm";
+import WrappedWcsListForm from "@/components/wcsListForm";
+import WrappedListSearch from "@/components/list_search";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -30,13 +30,14 @@ for (let i = 0; i < 4; i++) {
 }
 
 class WCSList extends React.Component<
-  { title?: string },
-  { visible: boolean; selectedRowKeys: any; actionName: string; sku_item: any; data: any }
+  { title?: string, columns: any },
+  { drawerVisible: boolean; selectedRowKeys: any; actionName: string; sku_item: any; data: any, filterVisible: boolean }
 > {
   public state = {
     selectedRowKeys: [], // Check here to configure the default column
     loading: false,
-    visible: false,
+    drawerVisible: false,
+    filterVisible: false,
     sku_item: {},
     actionName: "",
     data,
@@ -56,7 +57,7 @@ class WCSList extends React.Component<
         <div className="actionCol">
           <Button type="link" icon="form" onClick={this.handleEdit.bind(this, record)} />
           <Popconfirm
-            title="确定删除该SKU对象？"
+            title={this.props.title ? "确定删除该" + this.props.title + "？" : "确定删除"}
             onConfirm={this.handleDelete.bind(this, [record.sku_code])}
             okText="Yes"
             cancelText="No"
@@ -72,7 +73,7 @@ class WCSList extends React.Component<
 
   public showDrawer = () => {
     this.setState({
-      visible: true,
+      drawerVisible: true,
     });
   }
 
@@ -82,30 +83,42 @@ class WCSList extends React.Component<
 
   public handleEdit = (record: any) => {
     this.setState({
-      visible: true,
+      drawerVisible: true,
       actionName: "编辑SKU对象",
       sku_item: record,
     });
   }
 
   public handleCreate = () => {
+    const record: { [key: string]: any } = {};
+    this.props.columns.map((item: { dataType: string; dataIndex: string; editType: string; defaultOption: any}) => {
+      if (item.dataType === "string" && item.editType === "input") {
+        record[item.dataIndex] = "";
+      } else if (item.editType === "select" && item.hasOwnProperty("defaultOption")) {
+        record[item.dataIndex] = 0;
+      } else {
+        record[item.dataIndex] = null;
+      }
+      return null;
+    });
+
     this.setState({
-      visible: true,
+      drawerVisible: true,
       actionName: "增加SKU对象",
-      sku_item: {},
+      sku_item: record,
     });
   }
 
   public onClose = () => {
     this.setState({
-      visible: false,
+      drawerVisible: false,
     });
   }
 
   // data
   public handleSubmit = () => {
     console.log(data);
-    message.success("SKU对象添加成功！");
+    message.success(this.props.title ? this.props.title + "添加成功！" : "添加成功！");
     // this.setState({
     //   this.data.push()
     // });
@@ -118,6 +131,18 @@ class WCSList extends React.Component<
       onOk() {
         message.success("批量删除成功！");
       },
+    });
+  }
+
+  public handleFilterShow = () => {
+    this.setState({
+      filterVisible: true,
+    });
+  }
+
+  public handleFilterCancel = () => {
+    this.setState({
+      filterVisible: false,
     });
   }
 
@@ -140,6 +165,12 @@ class WCSList extends React.Component<
                 <Button
                   type="link"
                   className={styles.actionButton}
+                  icon="search"
+                  onClick={this.handleFilterShow}
+                />
+                <Button
+                  type="link"
+                  className={styles.actionButton}
                   icon="plus-circle"
                   onClick={this.handleCreate}
                 />
@@ -159,7 +190,7 @@ class WCSList extends React.Component<
         </div>
         <Table
           rowSelection={rowSelection}
-          columns={this.handleTableColumnsAction(tableColumns.sku)}
+          columns={this.handleTableColumnsAction(this.props.columns)}
           dataSource={data}
           rowKey="uid"
         />
@@ -169,13 +200,22 @@ class WCSList extends React.Component<
           closable={false}
           width={640}
           onClose={this.onClose}
-          visible={this.state.visible}
+          visible={this.state.drawerVisible}
         >
-          <WrappedSkuItemForm
+          <WrappedWcsListForm
             {...this.state.sku_item}
             onSubmitForm={this.handleSubmit}
+            field={this.props.columns}
           />
         </Drawer>
+        <Modal
+          visible={this.state.filterVisible}
+          footer={null}
+          width="70%"
+          onCancel={this.handleFilterCancel}
+        >
+          <WrappedListSearch search_field={this.props.columns} />
+        </Modal>
       </div>
     );
   }
